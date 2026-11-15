@@ -1,13 +1,19 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 int guessed[26]={0};
 int wrong = 0;
 int reveal_letter(const char answer[], char shown[], char guess);
-
+void init_shown(const char answer[], char shown[]);
 int main(void)
 {
-    char answer[20] = "apple";
-    char shown[20] = "_____";
+    srand((unsigned int)time(NULL));
+
+    const char word[][20]={"apple", "banana", "pear"};
+    const char *answer= word[rand()%3];
+    char shown[20];
+    init_shown(answer, shown);
     char guess;
 
     while (strcmp(answer, shown) != 0 && wrong<6)
@@ -42,14 +48,6 @@ int main(void)
         {
             printf("这次揭开了 %d 个位置。\n", count);
         }
-        if (count == 0)
-        {
-            printf("这次没有揭开新的位置。\n");
-        }
-        else
-        {
-            printf("这次揭开了 %d 个位置。\n", count);
-        }
     }
 
     if (strcmp(answer, shown) == 0)
@@ -76,4 +74,15 @@ int reveal_letter(const char answer[], char shown[], char guess)
     }
 
     return count;
+}
+void init_shown(const char answer[], char shown[])
+{
+    int i = 0;
+    while (answer[i] != '\0')
+    {
+        shown[i]='_';
+        i++;
+    }
+    shown[i]='\0';
+
 }
